@@ -12,6 +12,8 @@ class Env(BaseModel):
     INNGEST_API_BASE: str = "http://localhost:8288/v1"
     MAIN_MODEL: str
     EMBEDDING_MODEL: str
+    EMBEDDING_DIM: int = 3072
+    COLLECTION_NAME: str = "docs"
     
 env = Env.model_validate(os.environ)
     
