@@ -13,7 +13,7 @@ EMBEDEDING_DIM = 3072
 
 splitter = SentenceSplitter()
 
-def load_and_chunk_pdf(path: str):
+def load_and_chunk_pdf(path: str) -> list[str]:
     docs = PDFReader().load_data(file=Path(path))
     texts = [doc.text for doc in docs if getattr(doc, "text", None)]
     chunks = []
@@ -22,7 +22,7 @@ def load_and_chunk_pdf(path: str):
         chunks.extend(split_texts)
     return chunks
    
-def embed_texts(texts):
+def embed_texts(texts: list[str]) -> list[list[float]]:
     responses = client.embeddings.create(
         input=texts,
         model=EMBEDEDING_MODEL
