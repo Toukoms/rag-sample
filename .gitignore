@@ -12,3 +12,7 @@ wheels/
 # Env files
 .env*
 !.env.example
+
+
+# QDrant data
+qdrant_storage/
