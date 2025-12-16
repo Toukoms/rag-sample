@@ -7,8 +7,9 @@ load_dotenv()
 class Env(BaseModel):
     OPENAI_API_BASE_URL: str
     OPENAI_API_KEY: str
-    ENV: str
+    ENV: str = "development"
     QDRANT_URL: str
+    INNGEST_API_BASE: str = "http://localhost:8288/v1"
     
 env = Env.model_validate(os.environ)
     

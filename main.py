@@ -61,8 +61,8 @@ async def rag_query_pdf_ai(ctx: inngest.Context):
         return RAGSearchResult(contexts=found["contexts"], sources=found["sources"])
 
     question = str(ctx.event.data["question"])
-    top_k_value = ctx.event.data.get("top_k", 5)
-    top_k = int(top_k_value) if isinstance(top_k_value, (int, float, str)) else 5
+    top_k_value = str(ctx.event.data.get("top_k", 5))
+    top_k = int(top_k_value)
 
     found = await ctx.step.run("embed-and-search", lambda: _search(question, top_k), output_type=RAGSearchResult)
 
