@@ -76,7 +76,7 @@ async def rag_query_pdf_ai(ctx: inngest.Context):
 
     adapter = ai.openai.Adapter(
         auth_key=env.OPENAI_API_KEY,
-        model="gpt-4o-mini"
+        model="llama3.2"
     )
 
     res = await ctx.step.ai.infer(
@@ -98,5 +98,5 @@ async def rag_query_pdf_ai(ctx: inngest.Context):
 
 app = FastAPI()
 
-fast_api.serve(app, inngest_client, [rag_ingest_pdf])
+fast_api.serve(app, inngest_client, [rag_ingest_pdf, rag_query_pdf_ai])
 
