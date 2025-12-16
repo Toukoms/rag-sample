@@ -1,6 +1,7 @@
 # RAG Sample
 
-Demonstrate utility of RAG
+Learn RAG from youtube tutorial of [Tech With Tim](https://www.youtube.com/@TechWithTim).
+[Video URl](https://youtu.be/AUQJ9eeP-Ls?si=njZk2Xk1ru6gq7aU)
 
 ## Commands
 
