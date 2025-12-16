@@ -8,8 +8,8 @@ client = OpenAI(
   base_url=env.OPENAI_API_BASE_URL,
   api_key=env.OPENAI_API_KEY,
 )
-EMBEDEDING_MODEL = "text-embedding-3-large"
-EMBEDEDING_DIM = 3072
+EMBEDDING_MODEL = "qwen3-embedding:0.6b"
+EMBEDDING_DIM = 3072
 
 splitter = SentenceSplitter()
 
@@ -21,10 +21,12 @@ def load_and_chunk_pdf(path: str) -> list[str]:
         split_texts = splitter.split_text(text)
         chunks.extend(split_texts)
     return chunks
-   
+
 def embed_texts(texts: list[str]) -> list[list[float]]:
     responses = client.embeddings.create(
         input=texts,
-        model=EMBEDEDING_MODEL
+        model=EMBEDDING_MODEL,
+        dimensions=EMBEDDING_DIM,
+        
     )
     return [response.embedding for response in responses.data]
