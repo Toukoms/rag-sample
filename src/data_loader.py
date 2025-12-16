@@ -2,11 +2,11 @@ from pathlib import Path
 from openai import OpenAI
 from llama_index.core.text_splitter import SentenceSplitter
 from llama_index.readers.file import PDFReader
-import os
+from src.env import env
 
 client = OpenAI(
-  base_url=os.getenv("OPENAI_API_BASE_URL"),
-  api_key=os.getenv("OPENAI_API_KEY"),
+  base_url=env.OPENAI_API_BASE_URL,
+  api_key=env.OPENAI_API_KEY,
 )
 EMBEDEDING_MODEL = "text-embedding-3-large"
 EMBEDEDING_DIM = 3072

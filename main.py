@@ -1,6 +1,5 @@
 import logging
 from fastapi import FastAPI
-from dotenv import load_dotenv
 import inngest
 from inngest import fast_api
 from inngest.experimental import ai
@@ -9,8 +8,6 @@ from src.data_loader import load_and_chunk_pdf, embed_texts
 import uuid
 from src.vector_db import QdrantStorage
 from src.env import env
-
-load_dotenv()
 
 inngest_client = inngest.Inngest(
   app_id="rag_app",

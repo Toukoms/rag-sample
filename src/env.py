@@ -1,7 +1,10 @@
-import pydantic
+from pydantic import BaseModel
 import os
+from dotenv import load_dotenv
 
-class Env(pydantic.BaseModel):
+load_dotenv()
+
+class Env(BaseModel):
     OPENAI_API_BASE_URL: str
     OPENAI_API_KEY: str
     ENV: str
