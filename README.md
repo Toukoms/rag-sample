@@ -16,6 +16,12 @@ Activate Environnement :
 source ./.venv/Scripts/activate
 ```
 
+or 
+
+```bash
+source ./.venv/bin/activate
+```
+
 Run fastapi server :
 
 ```bash
