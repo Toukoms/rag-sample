@@ -4,6 +4,12 @@ Learn RAG from youtube tutorial of [Tech With Tim](https://www.youtube.com/@Tech
 
 ## Commands
 
+Sync uv project :
+
+```bash
+uv sync
+```
+
 Activate Environnement :
 
 ```bash
