@@ -4,38 +4,57 @@ Learn RAG from youtube tutorial of [Tech With Tim](https://www.youtube.com/@Tech
 
 ## Commands
 
-Sync uv project :
+### 1. Sync UV Project
+
+Install and sync project dependencies:
 
 ```bash
 uv sync
 ```
 
-Activate Environnement :
+### 2. Activate Virtual Environment
+
+On Windows:
 
 ```bash
 source ./.venv/Scripts/activate
 ```
 
-or 
+On macOS/Linux:
 
 ```bash
 source ./.venv/bin/activate
 ```
 
-Run fastapi server :
+### 3. Run Qdrant Container
+
+Start the Qdrant vector database using Docker:
+
+```bash
+docker-compose up -d
+```
+
+### 4. Run FastAPI Server
+
+Start the API server:
 
 ```bash
 uv run uvicorn main:app
 ```
 
-Run ingest UI :
+### 5. Run Inngest Development UI
+
+Launch the Inngest development interface for monitoring background jobs:
 
 ```bash
 npx inngest-cli@latest dev -u http://localhost:8000/api/inngest --no-discovery
 ```
 
-Run streamlit app :
+### 6. Run Streamlit Application
+
+Start the Streamlit web interface:
 
 ```bash
 uv run streamlit run ./streamlit_app.py
 ```
+

@@ -16,3 +16,6 @@ wheels/
 
 # QDrant data
 qdrant_storage/
+
+# Inngest local files
+uploads/
