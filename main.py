@@ -1,21 +1,21 @@
 import logging
 from fastapi import FastAPI
 from dotenv import load_dotenv
-import os
 import inngest
 from inngest import fast_api
 from inngest.experimental import ai
-from src.types import RAGChunkAndSrc, RAGUpsertResult
+from src.types import RAGChunkAndSrc, RAGUpsertResult, RAGSearchResult
 from src.data_loader import load_and_chunk_pdf, embed_texts
 import uuid
 from src.vector_db import QdrantStorage
+from src.env import env
 
 load_dotenv()
 
 inngest_client = inngest.Inngest(
   app_id="rag_app",
   logger=logging.getLogger("uvicorn"),
-  is_production=os.getenv("ENV") == "production",
+  is_production=env.ENV == "production",
   serializer=inngest.PydanticSerializer()
 )
 
@@ -51,6 +51,53 @@ async def rag_ingest_pdf(ctx: inngest.Context):
   ingested = await ctx.step.run("embed-and-upsert", lambda: _upsert(chunks_and_src), output_type=RAGUpsertResult)
   
   return ingested.model_dump()
+
+
+@inngest_client.create_function(
+    fn_id="RAG: Query PDF",
+    trigger=inngest.TriggerEvent(event="rag/query_pdf_ai")
+)
+async def rag_query_pdf_ai(ctx: inngest.Context):
+    async def _search(question: str, top_k: int = 5) -> RAGSearchResult:
+        query_vec = embed_texts([question])[0]
+        found = qdrant_storage.search_vectors(query_vec, top_k)
+        return RAGSearchResult(contexts=found["contexts"], sources=found["sources"])
+
+    question = str(ctx.event.data["question"])
+    top_k_value = ctx.event.data.get("top_k", 5)
+    top_k = int(top_k_value) if isinstance(top_k_value, (int, float, str)) else 5
+
+    found = await ctx.step.run("embed-and-search", lambda: _search(question, top_k), output_type=RAGSearchResult)
+
+    context_block = "\n\n".join(f"- {c}" for c in found.contexts)
+    user_content = (
+        "Use the following context to answer the question.\n\n"
+        f"Context:\n{context_block}\n\n"
+        f"Question: {question}\n"
+        "Answer concisely using the context above."
+    )
+
+    adapter = ai.openai.Adapter(
+        auth_key=env.OPENAI_API_KEY,
+        model="gpt-4o-mini"
+    )
+
+    res = await ctx.step.ai.infer(
+        "llm-answer",
+        adapter=adapter,
+        body={
+            "max_tokens": 1024,
+            "temperature": 0.2,
+            "messages": [
+                {"role": "system", "content": "Answer questions using only the provided context !"},
+                {"role": "user", "content": user_content}
+            ]
+        }
+    )
+    
+    answer = res["choices"][0]["message"]["content"].strip()  # type: ignore
+    return {"answer": answer, "sources": found.sources, "num_contexts": len(found.contexts)}
+
 
 app = FastAPI()
 
