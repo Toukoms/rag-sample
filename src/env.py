@@ -10,6 +10,8 @@ class Env(BaseModel):
     ENV: str = "development"
     QDRANT_URL: str
     INNGEST_API_BASE: str = "http://localhost:8288/v1"
+    MAIN_MODEL: str
+    EMBEDDING_MODEL: str
     
 env = Env.model_validate(os.environ)
     

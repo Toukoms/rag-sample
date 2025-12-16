@@ -76,7 +76,7 @@ async def rag_query_pdf_ai(ctx: inngest.Context):
 
     adapter = ai.openai.Adapter(
         auth_key=env.OPENAI_API_KEY,
-        model="llama3.2"
+        model=env.MAIN_MODEL
     )
 
     res = await ctx.step.ai.infer(

@@ -8,7 +8,7 @@ client = OpenAI(
   base_url=env.OPENAI_API_BASE_URL,
   api_key=env.OPENAI_API_KEY,
 )
-EMBEDDING_MODEL = "qwen3-embedding:0.6b"
+EMBEDDING_MODEL = env.EMBEDDING_MODEL
 EMBEDDING_DIM = 3072
 
 splitter = SentenceSplitter()
